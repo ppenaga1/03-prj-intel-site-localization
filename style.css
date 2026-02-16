@@ -1,3 +1,78 @@
+.centered-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+.centered-section > div {
+  flex: 1 1 300px;
+  max-width: 350px;
+  min-width: 220px;
+  margin: 0 8px;
+  box-sizing: border-box;
+}
+
+/* Small spacing for the Learn More buttons inside columns */
+.centered-section .btn {
+  margin-top: 12px;
+}
+
+body[dir="ltr"] .centered-section > div,
+body[dir="ltr"] .centered-section h2,
+body[dir="ltr"] .centered-section p,
+body[dir="ltr"] .centered-section a {
+  text-align: left;
+}
+body[dir="rtl"] .centered-section > div,
+body[dir="rtl"] .centered-section h2,
+body[dir="rtl"] .centered-section p,
+body[dir="rtl"] .centered-section a {
+  text-align: right;
+}
+
+@media (max-width: 1100px) {
+  .centered-section {
+    flex-direction: column;
+    align-items: center;
+  }
+  .centered-section > div {
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+}
+/* Centered section for cards or columns */
+.centered-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+/* Ensure text aligns with direction in centered sections */
+body[dir="ltr"] .centered-section > div,
+body[dir="ltr"] .centered-section h2,
+body[dir="ltr"] .centered-section p,
+body[dir="ltr"] .centered-section a {
+  text-align: left;
+}
+body[dir="rtl"] .centered-section > div,
+body[dir="rtl"] .centered-section h2,
+body[dir="rtl"] .centered-section p,
+body[dir="rtl"] .centered-section a {
+  text-align: right;
+}
 /* Limit content width and center on the page */
 html {
   overflow-x: hidden; /* Prevent horizontal scroll of entire page */
@@ -9,14 +84,29 @@ body {
   font-family: Roboto, sans-serif;
 }
 
+/* Set text-align left for LTR, right for RTL except header */
+body[dir="ltr"] section,
+body[dir="ltr"] .card,
+body[dir="ltr"] p,
+body[dir="ltr"] h2,
+body[dir="ltr"] h3,
+body[dir="ltr"] a {
+  text-align: left;
+}
+body[dir="rtl"] section,
+body[dir="rtl"] .card,
+body[dir="rtl"] p,
+body[dir="rtl"] h2,
+body[dir="rtl"] h3,
+body[dir="rtl"] a {
+  text-align: right;
+}
+
 /* Make header content centered and limited in width */
 header {
   /* Full-bleed header that stays centered across devices */
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw; /* span the viewport */
-  max-width: 100vw;
+  width: 100%;
+  margin: 0;
   background: linear-gradient(135deg, #0071c5 0%, #0052a3 100%); /* Subtle gradient background */
   padding: 30px 20px; /* Add padding for spacing */
   border-radius: 0; /* Remove rounded corners for full span */
@@ -68,6 +158,7 @@ header p {
 section {
   margin: 0 auto; /* Center section content */
   display: flex; /* Create a flexbox container */
+  justify-content: flex-start; /* Align left in LTR, right in RTL automatically */
   overflow-x: auto; /* Enable horizontal scrolling */
   scroll-snap-type: x mandatory; /* Enable scroll snapping on horizontal axis */
   gap: 15px; /* Space between cards */
@@ -93,21 +184,59 @@ section {
 }
 
 /* Style card images with zooming effect */
+
+/* Images inside section cards: scale to fit the container without overflow */
 section .logo-container img {
-  width: 100%; /* Fill the full container width */
-  height: 100%; /* Fill the full container height */
-  object-fit: cover; /* Zoom/crop to maintain aspect ratio and fill container */
+  width: 100%; /* Fill the container width */
+  height: 100%; /* Match the container height */
+  object-fit: cover; /* Crop/cover to maintain aspect ratio */
   border-radius: 5px; /* Smooth rounded corners */
-  box-shadow: 0 0 10px rgba(0, 113, 197, 0.5); /* Add a subtle blue shadow */
+  box-shadow: 0 0 10px rgba(0, 113, 197, 0.5);
+  display: block;
 }
 
 /* Style card images with white background and outline */
 section .logo-container {
   background-color: transparent;
-  width: 260px; /* Fit inside card padding (300px card - 40px total padding) */
-  height: 180px; /* Set fixed height */
+  box-sizing: border-box; /* include border in width calculations so it doesn't overflow */
+  /* make container a fixed-size flex child so all cards align */
+  flex: 0 0 180px;
+  width: 100%; /* use full card inner width and respect box-sizing */
+  max-width: none;
+  height: 180px; /* fixed height to keep consistent card layout */
   border: 5px solid #ffffff;
-  margin: 0 auto; /* Center the image container horizontally */
+  margin: 0 auto 8px auto; /* small gap below image to separate from titles */
+}
+
+/* Ensure headings don't push card size unexpectedly */
+.card h2, .card h3 {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding: 0;
+  align-self: flex-start; /* position at the start edge of the card (respects RTL/LTR) */
+  width: calc(100% - 40px); /* fit inside card padding */
+  box-sizing: border-box;
+  text-align: start; /* align to start of inline direction (left in LTR, right in RTL) */
+  padding-inline-start: 8px; /* small inset from the card edge */
+}
+
+/* Make card titles stay on a single line, truncate with ellipsis,
+   and scale responsively so longer titles don't wrap on narrow viewports */
+.card h2, .card h3 {
+  white-space: nowrap; /* keep title on one line */
+  overflow: hidden; /* hide overflowed text */
+  text-overflow: ellipsis; /* show an ellipsis when truncated */
+  line-height: 1.1; /* compact line height to better fit */
+  position: relative; /* ensure stacking above image if overlapping */
+  z-index: 40;
+}
+
+/* Slightly larger main card title; keep the year (h3) smaller */
+.card h2 {
+  font-size: clamp(16px, 3vw, 22px); /* slightly larger for main title */
+}
+.card h3 {
+  font-size: clamp(19px, 2.2vw, 16px); /* smaller for year/secondary header */
 }
 
 /* Style for h2 headings */
@@ -115,6 +244,20 @@ h2 {
   font-size: 32px; /* Make h2 headings larger */
   margin: 5px 0; /* Reduce margin to lessen gap from h3 */
   color:rgba(0, 113, 197, 1);
+}
+
+/* Icon displayed before column titles in the centered three-column section */
+.centered-section h2 {
+  display: inline-flex;
+  align-items: center;
+}
+.col-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  margin-inline-end: 8px; /* logical margin works for LTR/RTL */
+  flex: 0 0 18px;
+  vertical-align: middle;
 }
 
 /* Style for h3 headings */
@@ -136,6 +279,11 @@ h3 {
   position: relative; /* Position relative for absolute positioning of children */
   flex-shrink: 0; /* Prevent cards from shrinking */
   scroll-snap-align: center; /* Snap cards to center on scroll */
+  overflow: hidden; /* Prevent content (images/borders) from overflowing the card */
+  box-sizing: border-box; /* ensure padding/border included in size */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* Hide the description text by default */
@@ -150,19 +298,23 @@ h3 {
   padding: 20px; /* Space inside the overlay */
   margin: 0; /* Remove default paragraph margin */
   opacity: 0; /* Hidden by default */
-  z-index: 10; /* Place on top of other content */
+  z-index: 0; /* Keep under titles when hidden */
   border-radius: 6px; /* Match card border radius */
   overflow-y: auto; /* Allow scrolling if text is too long */
-  transition: opacity 0.3s ease; /* Smooth fade in/out */
+  transition: opacity 0.3s ease, z-index 0s linear 0.3s; /* Smooth fade in/out */
   display: flex; /* Center the text */
   align-items: center;
   justify-content: center;
   text-align: center; /* Center text alignment */
+  pointer-events: none; /* Don't block clicks when hidden */
 }
 
 /* Show the description when hovering over the card */
 .card:hover p {
   opacity: 1; /* Show the description on hover */
+  z-index: 30; /* Bring overlay above everything when visible */
+  transition: opacity 0.3s ease; /* remove delay when showing */
+  pointer-events: auto;
 }
 
 /* Footer note under the timeline */
@@ -216,15 +368,25 @@ h3 {
 @media (max-width: 420px) {
   .card {
     width: 260px; /* slightly smaller than desktop 300px */
-    height: 260px;
+    height: auto; /* let content determine height to avoid overlap */
     padding: 14px;
+    align-items: flex-start; /* ensure headings layout correctly above/below images */
   }
 
   /* Reduce image container inside cards so it doesn't overflow */
   section .logo-container {
-    width: 220px;
-    height: 140px;
+    width: 100%; /* full width inside the smaller card */
+    max-width: none;
+    height: auto; /* allow image to size naturally */
     border-width: 4px;
+  }
+
+  /* Constrain the image itself so it doesn't become taller than the card content */
+  section .logo-container img {
+    height: auto;
+    max-width: 100%;
+    max-height: 160px;
+    object-fit: cover;
   }
 
   /* Adjust section padding and scroll padding so snapped cards center correctly */
@@ -238,5 +400,54 @@ h3 {
   /* Slightly reduce h1 size on narrow screens to save vertical space */
   h1 {
     font-size: 34px;
+  }
+}
+
+/* Footer styles - beginner friendly and direction-aware */
+.site-footer {
+  background: #0b2540;
+  color: #ffffff;
+  padding: 20px 10px;
+  margin-top: 40px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.site-footer .footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+.site-footer .footer-copy {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+.footer-nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.footer-nav a {
+  color: #d6e9ff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+}
+.footer-nav a:hover {
+  text-decoration: underline;
+}
+/* Respect page direction (LTR/RTL) for logical alignment */
+body[dir="rtl"] .site-footer .footer-inner { direction: rtl; }
+@media (max-width: 600px) {
+  .site-footer .footer-inner {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 8px;
   }
 }
