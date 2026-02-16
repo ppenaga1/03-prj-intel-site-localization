@@ -1,0 +1,242 @@
+/* Limit content width and center on the page */
+html {
+  overflow-x: hidden; /* Prevent horizontal scroll of entire page */
+}
+body {
+  max-width: 1200px; /* Set maximum width for content */
+  margin: 0 auto; /* Center the content horizontally */
+  padding: 0 20px; /* Add padding on the sides for small screens */
+  font-family: Roboto, sans-serif;
+}
+
+/* Make header content centered and limited in width */
+header {
+  /* Full-bleed header that stays centered across devices */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw; /* span the viewport */
+  max-width: 100vw;
+  background: linear-gradient(135deg, #0071c5 0%, #0052a3 100%); /* Subtle gradient background */
+  padding: 30px 20px; /* Add padding for spacing */
+  border-radius: 0; /* Remove rounded corners for full span */
+  color: white; /* White text for contrast */
+  text-align: center;
+  font-family: Roboto, sans-serif; /* Use Roboto font for header */
+  font-weight: bolder;
+  box-sizing: border-box;
+}
+
+/* Ensure header inner content aligns with centered page layout */
+header > div {
+  max-width: 1200px; /* match body max-width */
+  margin: 0 auto; /* center inner content */
+  padding: 0 20px; /* keep same side padding */
+  box-sizing: border-box;
+}
+
+/* Tablet / iPad adjustments to avoid right-shifted alignment */
+@media (max-width: 1366px) {
+  header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  header > div {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* Style for h1 heading */
+h1 {
+  font-size: 50px; /* Make h1 larger */
+  margin: 20px 0; /* Add spacing around the h1 */
+}
+
+/* Style for header description */
+header p {
+  max-width: 100%; /* Make description fit the full header width */
+  width: 800px; /* Ensure it stretches across */
+  border-top: 3px solid rgb(52, 185, 226); /* Add blue line as spacer */
+  padding-top: 20px; /* Add space below the line */
+  margin: 0 auto; /* Center the description */
+  line-height: 1.6; /* Improve readability */
+  font-weight: 200;
+}
+
+/* Make section content centered and limited in width */
+section {
+  margin: 0 auto; /* Center section content */
+  display: flex; /* Create a flexbox container */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  scroll-snap-type: x mandatory; /* Enable scroll snapping on horizontal axis */
+  gap: 15px; /* Space between cards */
+  padding: 20px 30px; /* Add padding - left/right for shadow space, top/bottom vertical */
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  scroll-padding-inline: calc((100vw - 300px) / 2); /* center snapped cards in viewport */
+}
+
+/* Blue square background for the logo */
+.logo-container {
+  width: 150px; /* Square width */
+  height: 150px; /* Square height */
+  display: flex; /* Center content inside */
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto; /* Center it on the page */
+}
+
+/* Make the logo fit nicely inside the square */
+.logo-container img {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+}
+
+/* Style card images with zooming effect */
+section .logo-container img {
+  width: 100%; /* Fill the full container width */
+  height: 100%; /* Fill the full container height */
+  object-fit: cover; /* Zoom/crop to maintain aspect ratio and fill container */
+  border-radius: 5px; /* Smooth rounded corners */
+  box-shadow: 0 0 10px rgba(0, 113, 197, 0.5); /* Add a subtle blue shadow */
+}
+
+/* Style card images with white background and outline */
+section .logo-container {
+  background-color: transparent;
+  width: 260px; /* Fit inside card padding (300px card - 40px total padding) */
+  height: 180px; /* Set fixed height */
+  border: 5px solid #ffffff;
+  margin: 0 auto; /* Center the image container horizontally */
+}
+
+/* Style for h2 headings */
+h2 {
+  font-size: 32px; /* Make h2 headings larger */
+  margin: 5px 0; /* Reduce margin to lessen gap from h3 */
+  color:rgba(0, 113, 197, 1);
+}
+
+/* Style for h3 headings */
+h3 {
+  font-weight: 600;
+  margin: 15px 0 5px 0; /* Add top margin for gap from image, keep small bottom margin for h2 */
+}
+
+/* Style for card container */
+.card {
+  /*border: 2px solid #0071c5; /* Blue border around the card */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5); /* Add a subtle blue shadow */
+  padding: 20px; /* Space inside the card */
+  margin: 0px; /* Remove default margin */
+  background-color: #f9f9f9; /* Light background for the card */
+  border-radius: 8px; /* Rounded corners */
+  width: 300px; /* Set width for cards */
+  height: 300px; /* Set height for cards */
+  position: relative; /* Position relative for absolute positioning of children */
+  flex-shrink: 0; /* Prevent cards from shrinking */
+  scroll-snap-align: center; /* Snap cards to center on scroll */
+}
+
+/* Hide the description text by default */
+.card p {
+  position: absolute; /* Position on top of the card */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(7, 113, 197, 0.9); /* Blue overlay with transparency */
+  color: white; /* White text for readability */
+  padding: 20px; /* Space inside the overlay */
+  margin: 0; /* Remove default paragraph margin */
+  opacity: 0; /* Hidden by default */
+  z-index: 10; /* Place on top of other content */
+  border-radius: 6px; /* Match card border radius */
+  overflow-y: auto; /* Allow scrolling if text is too long */
+  transition: opacity 0.3s ease; /* Smooth fade in/out */
+  display: flex; /* Center the text */
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Center text alignment */
+}
+
+/* Show the description when hovering over the card */
+.card:hover p {
+  opacity: 1; /* Show the description on hover */
+}
+
+/* Footer note under the timeline */
+.note {
+  text-align: center; /* Center the note text */
+  margin: 16px 0 40px 0; /* Spacing above and below the note */
+  font-size: 14px; /* Slightly smaller text */
+  color: #333; /* Dark gray for readability */
+  font-weight: 600; /* Slight emphasis */
+}
+
+/* Adjust scroll padding for tablet / iPad widths to avoid right-shifted alignment */
+@media (max-width: 1024px) {
+  section {
+    padding-left: 16px;
+    padding-right: 16px;
+    scroll-padding-inline: 16px; /* small safe padding on narrow viewports */
+  }
+}
+
+/* Responsive sizes for the footer note */
+@media (max-width: 420px) {
+  .note {
+    font-size: 12px;
+    margin: 12px 0 24px 0;
+  }
+}
+
+@media (min-width: 421px) and (max-width: 768px) {
+  .note {
+    font-size: 13px;
+    margin: 14px 0 32px 0;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .note {
+    font-size: 14px;
+    margin: 16px 0 36px 0;
+  }
+}
+
+@media (min-width: 1025px) {
+  .note {
+    font-size: 14px;
+    margin: 16px 0 40px 0;
+  }
+}
+
+/* Mobile / small phones: reduce card size so cards are fully visible */
+@media (max-width: 420px) {
+  .card {
+    width: 260px; /* slightly smaller than desktop 300px */
+    height: 260px;
+    padding: 14px;
+  }
+
+  /* Reduce image container inside cards so it doesn't overflow */
+  section .logo-container {
+    width: 220px;
+    height: 140px;
+    border-width: 4px;
+  }
+
+  /* Adjust section padding and scroll padding so snapped cards center correctly */
+  section {
+    padding-left: 12px;
+    padding-right: 12px;
+    scroll-padding-inline: calc((100vw - 260px) / 2);
+    gap: 12px;
+  }
+
+  /* Slightly reduce h1 size on narrow screens to save vertical space */
+  h1 {
+    font-size: 34px;
+  }
+}
